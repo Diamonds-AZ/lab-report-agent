@@ -1,0 +1,22 @@
+{
+  "converter_order": [
+    "soffice",
+    "word_com"
+  ],
+  "allowed_modes": [
+    "native_docx",
+    "legacy_doc_converted_soffice",
+    "legacy_doc_converted_word_com",
+    "legacy_doc_unresolved",
+    "input_missing"
+  ],
+  "implicit_template_docx_fallback_allowed": false,
+  "audit_file": "work/input_resolution.json",
+  "audit_required_fields": [
+    "original_input",
+    "resolved_input",
+    "mode",
+    "notes",
+    "conversion_attempts"
+  ]
+}

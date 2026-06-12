@@ -11,6 +11,8 @@ This document records the current stable operating policy for formal lab-report 
   - Preserve reference assets under `assets/references/`, including HCL, DataGrip, IDEA, and VS Code references.
 - Do not modify the original report template.
 - Copy the source template into the workspace `input/` directory, then operate only on that copy.
+- Resolve legacy `.doc` inputs with the fixed converter order: LibreOffice / `soffice` first, then Microsoft Word COM automation on Windows if `soffice` fails, then `ACTION_REQUIRED` if no converter succeeds.
+- Do not silently reuse an unrelated existing `input/template.docx` when `.doc` conversion fails. The audit file `work/input_resolution.json` must record each converter attempt.
 - Write completed reports to `output/reports/`.
 - Formal report filenames default to `<task_name>-完成版.docx`.
 - If `configs/task.yaml` explicitly sets `output_report_name`, use that filename instead after sanitizing unsafe Windows filename characters.

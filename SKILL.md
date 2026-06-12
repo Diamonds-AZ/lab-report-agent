@@ -90,6 +90,7 @@ Default formal-task posture:
 - All Chinese text, answers, report text, and image prompts must travel through UTF-8 files, not shell pipes or command arguments.
 - Chinese paths, Chinese body text, and complex JSON must not be embedded in PowerShell here-strings, PowerShell pipes, `python -c`, or temporary inline Python snippets. Write them to UTF-8 files and pass only paths/control arguments.
 - If output introduces new `???` or `�`, treat the report as polluted and regenerate from a clean template.
+- For legacy `.doc` inputs, resolve the template with a fixed converter order: use native `.docx` directly; for `.doc`, try LibreOffice / `soffice` first; if that fails on Windows, try Microsoft Word COM automation; if both fail, stop with `ACTION_REQUIRED` and ask for a `.docx` template or converter installation. Do not silently fall back to an unrelated existing `input/template.docx`.
 - When `fill_identity_fields=false`, do not fill name, student ID, class, or identity-derived screenshot content.
 - Optional `output_report_name` in `configs/task.yaml` overrides the default report filename.
 - Image generation plans should carry `image_source` with one of `gpt_image_2`, `synthetic_hcl`, `synthetic_datagrip`, `manual_provided`, `real_screenshot`, or `unknown`.
@@ -191,6 +192,26 @@ Important rules:
 - `run_lab_report_task.py` writes `work/encoding_report.md`.
 
 ## Execution Flow
+
+### Legacy `.doc` Input Resolution
+
+`scripts/convert_legacy_doc.py` must use this order:
+
+```text
+.docx input -> use directly
+.doc input -> try LibreOffice / soffice
+if soffice is unavailable or fails on Windows -> try Microsoft Word COM SaveAs2(..., 16)
+if all converters fail -> ACTION_REQUIRED; ask the user to provide .docx or install a converter
+```
+
+Rules:
+
+- Write conversion output only under the current workspace `input/`.
+- Never modify the original `.doc`.
+- Run Word with `Visible=false` and `DisplayAlerts=0`.
+- Always close the document and quit Word after COM conversion.
+- Record every converter attempt in `work/input_resolution.json`.
+- Do not use an old `input/template.docx` as an implicit fallback.
 
 ### pre_images, first pause: semantic planning
 

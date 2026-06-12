@@ -9,7 +9,7 @@ This project is designed for report-generation workflows where structure matters
 ## Features
 
 - Copies a source Word template into an isolated workspace before editing.
-- Converts legacy `.doc` inputs to `.docx` when LibreOffice is available.
+- Converts legacy `.doc` inputs to `.docx` with LibreOffice / `soffice`, then falls back to Microsoft Word COM automation on Windows when needed.
 - Extracts document structure from Word templates.
 - Requires semantic confirmation before filling text or inserting screenshots.
 - Builds refined text-fill and image-insertion plans.
@@ -39,6 +39,7 @@ Do not publish user-provided `.doc/.docx` templates unless you have permission t
 - `python-docx`.
 - `Pillow`.
 - LibreOffice / `soffice` for automatic legacy `.doc` to `.docx` conversion.
+- Microsoft Word on Windows is optional, but can be used as the fallback converter when `soffice` is unavailable or fails.
 - A Codex environment that can call the image generation tool when `gpt_image_2_only` is required.
 
 Install Python dependencies:
@@ -100,7 +101,7 @@ MIT. See `LICENSE`.
 ## 功能
 
 - 在编辑前把 Word 模板复制到隔离工作区，避免修改原文件。
-- 在可用 LibreOffice / `soffice` 时，将旧版 `.doc` 转换为 `.docx`。
+- 使用 LibreOffice / `soffice` 将旧版 `.doc` 转换为 `.docx`；在 Windows 下必要时可回退到 Microsoft Word COM 自动化转换。
 - 从 Word 模板中抽取段落、表格、空白和截图位等结构信息。
 - 在写入正文或插入截图前，要求进行语义确认。
 - 生成精炼的文字填充计划和图片插入计划。
@@ -130,6 +131,7 @@ MIT. See `LICENSE`.
 - `python-docx`。
 - `Pillow`。
 - LibreOffice / `soffice`，用于自动把旧版 `.doc` 转换为 `.docx`。
+- Windows 上的 Microsoft Word 是可选项；当 `soffice` 不可用或转换失败时，可作为回退转换器。
 - 当任务要求 `gpt_image_2_only` 时，需要能调用图片生成工具的 Codex 环境。
 
 安装 Python 依赖：

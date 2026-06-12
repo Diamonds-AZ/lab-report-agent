@@ -16,6 +16,7 @@ REQUIRED_CASES = [
     "05_long_question_answer_boundary",
     "06_fixed_task_confirmation",
     "07_fixed_image_confirmation",
+    "08_legacy_doc_converter_fallback",
 ]
 
 
@@ -92,6 +93,20 @@ def main() -> None:
     for marker in ("# 第二阶段确认", "| 图片", "放在哪里", "附近文字/锚点", "## 你可以怎么回复"):
         if marker not in second_expected.get("required_markers", []):
             fail(f"07_fixed_image_confirmation must require marker {marker}")
+
+    converter_expected = load_json(ROOT / "08_legacy_doc_converter_fallback" / "expected.json")
+    if converter_expected.get("converter_order") != ["soffice", "word_com"]:
+        fail("08_legacy_doc_converter_fallback must require soffice before Word COM")
+    if converter_expected.get("implicit_template_docx_fallback_allowed") is not False:
+        fail("08_legacy_doc_converter_fallback must forbid implicit template.docx fallback")
+    allowed_modes = converter_expected.get("allowed_modes", [])
+    for mode in (
+        "legacy_doc_converted_soffice",
+        "legacy_doc_converted_word_com",
+        "legacy_doc_unresolved",
+    ):
+        if mode not in allowed_modes:
+            fail(f"08_legacy_doc_converter_fallback must allow mode {mode}")
 
     print("PASS: smoke assets are present and internally consistent")
 
