@@ -46,13 +46,13 @@ When invoking the skill, describe the task as clearly as possible. Useful detail
 
 - Student identity to fill, such as name, student ID, and class, if the report should include them.
 - Whether screenshots should be generated with image-2, provided manually, captured from real software, or produced by another source.
-- Screenshot requirements, such as command line only, no HCL main page, specific visible commands, device names, host names, database names, or output text.
-- The experiment topic, software/platform, report type, and any parts of the template that must or must not be changed.
-- Whether one report or multiple reports should be generated.
+- Screenshot requirements, such as network-design experiments that need command-line screenshots only, no main software page, specific visible commands, device names, host names, database names, or output text.
+- The experiment topic, software/platform, report type, and any parts of the template that must or must not be changed. If you do not describe the experiment type, the workflow will infer it.
+- Whether to generate one report or multiple reports from a single template.
 
 ## Optional Configuration And Batch Use
 
-- You can configure reference images, for example UI style references for HCL or other software screenshots.
+- You can configure reference images, for example UI style references for HCL, DataGrip, or other software screenshots.
 - The skill currently supports configuring multiple student names and IDs to generate multiple report copies in one run.
 - Batch generation is a test capability. The author has not optimized it for large rosters, complex per-student customization, or production use.
 
@@ -161,13 +161,13 @@ MIT. See `LICENSE`.
 
 - 需要填写的学生身份信息，例如姓名、学号、班级。
 - 截图使用什么来源，例如 image-2 生成、手动提供、真实软件截图，或其他生图来源。
-- 截图的具体要求，例如只要命令行、不要 HCL 主页面、必须出现哪些命令、设备名、主机名、数据库名或输出内容。
-- 实验主题、使用的软件/平台、报告类型，以及模板中哪些内容必须修改或不能修改。
-- 是只生成一份报告，还是一次性生成多份报告。
+- 截图的具体要求，例如某些网络设计相关实验，只要命令行截图、不要软件主页面、必须出现哪些命令、设备名、主机名、数据库名或输出内容。
+- 实验主题、使用的软件/平台、报告类型，以及模板中哪些内容必须修改或不能修改。（若不描述实验类型，工作流会自行推测）
+- 是只生成一份报告，还是根据一个模板，一次性生成多份报告。
 
 ## 可选配置与批量能力
 
-- 可以配置参考图，例如 HCL 或其他软件截图的界面风格参考。
+- 可以配置参考图，例如 HCL，DataGrip 或其他软件截图的界面风格参考。
 - 目前支持配置多个人的姓名和学号，并在一次运行中生成多份报告。
 - 批量生成仍是测试能力。作者尚未针对大名单、复杂的逐人定制或生产级使用做优化。
 
