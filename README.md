@@ -33,6 +33,29 @@ This repository intentionally does not include real student reports, real course
 
 Do not publish user-provided `.doc/.docx` templates unless you have permission to redistribute them.
 
+## Compatibility And Beta Status
+
+- This skill is currently designed and tested only for Codex. The author has not tested it with other vibe-coding tools.
+- Image generation currently assumes the Codex `image_gen` / image-2 workflow. If you use another tool, you may need to adapt the image-generation plan, generated-image manifest, or connect your own external image model.
+- This project is a test/beta skill, not a polished product. It may struggle with some lab-report types, unusual Word templates, or strict institution-specific formatting rules.
+- Always inspect the generated report, screenshots, and audit files before submitting anything.
+
+## What To Tell Codex When You Start
+
+When invoking the skill, describe the task as clearly as possible. Useful details include:
+
+- Student identity to fill, such as name, student ID, and class, if the report should include them.
+- Whether screenshots should be generated with image-2, provided manually, captured from real software, or produced by another source.
+- Screenshot requirements, such as command line only, no HCL main page, specific visible commands, device names, host names, database names, or output text.
+- The experiment topic, software/platform, report type, and any parts of the template that must or must not be changed.
+- Whether one report or multiple reports should be generated.
+
+## Optional Configuration And Batch Use
+
+- You can configure reference images, for example UI style references for HCL or other software screenshots.
+- The skill currently supports configuring multiple student names and IDs to generate multiple report copies in one run.
+- Batch generation is a test capability. The author has not optimized it for large rosters, complex per-student customization, or production use.
+
 ## Requirements
 
 - Python 3.11 or newer.
@@ -124,6 +147,29 @@ MIT. See `LICENSE`.
 这个仓库刻意不包含真实学生报告、真实课程模板、生成后的报告、生成截图、`work/` 运行目录、带个人信息的 roster、API key 或学校/机构材料。
 
 除非你有再分发授权，不要把用户提供的 `.doc/.docx` 模板发布到公开仓库。
+
+## 兼容性与测试版状态
+
+- 这个 skill 目前仅针对 Codex 设计和测试。作者并未使用其他 vibe-coding 工具测试过。
+- 生图流程目前默认使用 Codex 的 `image_gen` / image-2 工作流。如果你在其他工具里使用，可能需要自行调整图片生成计划、图片 manifest，或外接自己的生图模型。
+- 这个项目仍是测试版 skill，不是成熟产品。面对某些实验报告类型、特殊 Word 模板或严格的学校格式要求时，可能会力不从心。
+- 提交前请务必人工检查生成后的报告、截图和审计文件。
+
+## 开始调用时建议说明什么
+
+调用 skill 时，尽量把任务描述清楚。建议说明：
+
+- 需要填写的学生身份信息，例如姓名、学号、班级。
+- 截图使用什么来源，例如 image-2 生成、手动提供、真实软件截图，或其他生图来源。
+- 截图的具体要求，例如只要命令行、不要 HCL 主页面、必须出现哪些命令、设备名、主机名、数据库名或输出内容。
+- 实验主题、使用的软件/平台、报告类型，以及模板中哪些内容必须修改或不能修改。
+- 是只生成一份报告，还是一次性生成多份报告。
+
+## 可选配置与批量能力
+
+- 可以配置参考图，例如 HCL 或其他软件截图的界面风格参考。
+- 目前支持配置多个人的姓名和学号，并在一次运行中生成多份报告。
+- 批量生成仍是测试能力。作者尚未针对大名单、复杂的逐人定制或生产级使用做优化。
 
 ## 环境要求
 
