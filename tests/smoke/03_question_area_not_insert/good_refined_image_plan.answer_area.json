@@ -1,0 +1,30 @@
+{
+  "plan_stage": "refined",
+  "source_stage": "gpt_semantic_planning",
+  "items": [
+    {
+      "image_item_id": "GOOD-ANSWER-AREA-IMAGE",
+      "source_candidate_id": "image_material_010",
+      "block_id": "p12",
+      "is_image_required": true,
+      "confidence": "high",
+      "slot_type": "paragraph_blank_region",
+      "target_table_index": null,
+      "layout_type": "paragraph_blank_region",
+      "target_anchor": "一、程序流程图：",
+      "target_block_range": [
+        "p13",
+        "p13"
+      ],
+      "requires_generated_image": true,
+      "image_kind": "mcu_keil_aiot",
+      "step_context": "程序流程图：I2C 寻址流程",
+      "prompt_topic": "Create a simple I2C addressing flowchart.",
+      "zone_type": "answer_area",
+      "need_user_review": false,
+      "reason": "Positive fixture: this targets the answer area after 实验报告模板."
+    }
+  ],
+  "skipped_candidates": [],
+  "unresolved": []
+}

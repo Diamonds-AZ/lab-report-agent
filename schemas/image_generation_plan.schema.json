@@ -1,0 +1,13 @@
+{
+  "name": "image_generation_plan",
+  "required_top_level": ["run_id", "run_dir", "generated_images_dir", "expected_image_count", "items"],
+  "required_item_fields": [
+    "image_id",
+    "image_item_id",
+    "target_table_index",
+    "step_context",
+    "output_filename",
+    "prompt",
+    "status"
+  ]
+}

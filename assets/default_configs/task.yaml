@@ -1,0 +1,72 @@
+﻿task_name: "实验报告自动生成流程测试"
+input_report: "input/template.docx"
+experiment_type: "auto"
+
+workflow_stage: "first_run_test"
+
+target_mode: "single"
+target_students: []
+temporary_students: []
+
+output_dir: "output/reports"
+
+execution_mode: "synthetic"
+image_generation_model: "gpt-image-2"
+
+requirements:
+  analyze_template: true
+  fill_text: true
+  generate_images: true
+  insert_images: true
+  preserve_structure: true
+  batch_generate: false
+
+semantic_planning:
+  use_gpt_text_planner: true
+  use_gpt_image_planner: true
+  require_refined_text_fill_plan: true
+  require_refined_image_plan: true
+
+identity_rules:
+  fill_identity_fields: false
+  use_identity_in_report: false
+  use_identity_in_images: false
+  use_identity_in_filename: false
+  reason: "第一次仅测试流程跑通，不生成学号姓名"
+
+image_rules:
+  max_merge_count: 4
+  allow_composite_images: true
+  platform_must_match_profile: true
+  use_reference_images: true
+  reference_image_mode: "style_and_layout_only"
+  auto_check_images: false
+  manual_review_required: true
+  regenerate_only_when_user_requests: true
+  per_student_images: false
+  image_count_policy:
+    warn_threshold: 8
+    confirm_threshold: 12
+    hard_limit: 40
+
+fill_rules:
+  fill_blank_in_place: true
+  semantic_blank_detection: true
+  doc_structure_output: "work/doc_structure.json"
+  draft_text_candidates_output: "work/draft_text_fill_candidates.json"
+  refined_text_plan_output: "work/refined_text_fill_plan.json"
+  blank_fill_audit_output: "work/blank_fill_audit.md"
+  forbid_fill_prefix_for_blanks: true
+  fill_prefix_forbidden:
+    - "填写："
+    - "应填入："
+    - "答案："
+  fallback_insert_after_anchor_only_when_uncertain: true
+
+content_overrides:
+  writing_style: "像大学生写的，严谨自然，不要太AI"
+  principle_length: "medium"
+  steps_detail_level: "medium"
+  analysis_length: "medium"
+  summary_style: "自然简洁"
+  avoid_ai_tone: true

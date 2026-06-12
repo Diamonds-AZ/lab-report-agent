@@ -1,0 +1,24 @@
+{
+  "name": "refined_image_plan",
+  "required_top_level": ["plan_stage", "source_stage", "items", "skipped_candidates", "unresolved"],
+  "required_item_fields": [
+    "image_item_id",
+    "source_candidate_id",
+    "block_id",
+    "is_image_required",
+    "confidence",
+    "slot_type",
+    "target_table_index",
+    "layout_type",
+    "requires_generated_image",
+    "image_kind",
+    "step_context",
+    "prompt_topic",
+    "need_user_review",
+    "reason"
+  ],
+  "required_values": {
+    "plan_stage": "refined",
+    "source_stage": "gpt_semantic_planning"
+  }
+}

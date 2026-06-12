@@ -1,0 +1,22 @@
+{
+  "name": "refined_text_fill_plan",
+  "required_top_level": ["plan_stage", "source_stage", "items", "unresolved"],
+  "required_item_fields": [
+    "item_id",
+    "block_id",
+    "is_text_fill",
+    "fill_type",
+    "slot_index",
+    "left_context",
+    "right_context",
+    "answer",
+    "replacement_strategy",
+    "confidence",
+    "need_user_review",
+    "reason"
+  ],
+  "required_values": {
+    "plan_stage": "refined",
+    "source_stage": "gpt_semantic_planning"
+  }
+}

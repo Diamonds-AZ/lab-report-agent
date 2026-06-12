@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local task workspaces and generated artifacts
+work/
+work_*/
+input/
+output/
+assets/generated_images/
+.codex/generated_images/
+
+# Private configs and secrets
+.env
+.env.*
+configs/roster.yaml
+configs/task.yaml
+
+# Generated or user-provided reports/templates
+*.doc
+*.docx
+!tests/smoke/**/*.docx
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

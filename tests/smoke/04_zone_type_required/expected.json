@@ -1,0 +1,12 @@
+{
+  "required_in_refined_text_items": [
+    "zone_type"
+  ],
+  "required_in_refined_image_items": [
+    "zone_type"
+  ],
+  "required_in_image_generation_items": [
+    "zone_type"
+  ],
+  "must_fail_if_missing": true
+}

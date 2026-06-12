@@ -1,0 +1,24 @@
+{
+  "plan_stage": "refined",
+  "source_stage": "gpt_semantic_planning",
+  "items": [
+    {
+      "image_item_id": "BAD-MISSING-ZONE-TYPE",
+      "source_candidate_id": "image_material_001",
+      "block_id": "p1",
+      "is_image_required": true,
+      "confidence": "high",
+      "slot_type": "paragraph_blank_region",
+      "target_table_index": null,
+      "layout_type": "paragraph_blank_region",
+      "requires_generated_image": true,
+      "image_kind": "generic_report",
+      "step_context": "Missing zone_type should fail",
+      "prompt_topic": "This fixture intentionally omits zone_type.",
+      "need_user_review": false,
+      "reason": "Negative fixture for zone_type requirement."
+    }
+  ],
+  "skipped_candidates": [],
+  "unresolved": []
+}

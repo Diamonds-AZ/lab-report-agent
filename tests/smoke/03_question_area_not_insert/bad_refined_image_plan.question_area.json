@@ -1,0 +1,30 @@
+{
+  "plan_stage": "refined",
+  "source_stage": "gpt_semantic_planning",
+  "items": [
+    {
+      "image_item_id": "BAD-QUESTION-AREA-IMAGE",
+      "source_candidate_id": "image_material_001",
+      "block_id": "p8",
+      "is_image_required": true,
+      "confidence": "high",
+      "slot_type": "paragraph_blank_region",
+      "target_table_index": null,
+      "layout_type": "paragraph_blank_region",
+      "target_anchor": "题目说明：观察硬件结构，如下图所示",
+      "target_block_range": [
+        "p9",
+        "p9"
+      ],
+      "requires_generated_image": true,
+      "image_kind": "mcu_keil_aiot",
+      "step_context": "错误样例：把题目说明区当成插图区",
+      "prompt_topic": "This should fail because it targets question_area.",
+      "zone_type": "question_area",
+      "need_user_review": true,
+      "reason": "Negative fixture: validation must reject this unless explicitly allowed."
+    }
+  ],
+  "skipped_candidates": [],
+  "unresolved": []
+}

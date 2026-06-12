@@ -1,0 +1,3 @@
+display_name: Lab Report Agent
+short_description: Generate Chinese lab reports from Word templates with semantic blank filling and synthetic screenshots.
+default_prompt: Use this skill to initialize the current workspace, analyze the lab report template, fill blanks in-place, generate needed screenshots, and produce audited Word report outputs.

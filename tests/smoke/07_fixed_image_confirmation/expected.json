@@ -1,0 +1,18 @@
+{
+  "required_file": "work/image_insertion_confirmation.md",
+  "required_markers": [
+    "# 第二阶段确认",
+    "## 图片方案总览",
+    "| 图片",
+    "区域类型",
+    "放在哪里",
+    "附近文字/锚点",
+    "覆盖哪些要求",
+    "图片里会展示什么",
+    "必须 image-2",
+    "## 你可以怎么回复"
+  ],
+  "must_display_inline_to_user": true,
+  "allow_natural_language_revision": true
+}
+

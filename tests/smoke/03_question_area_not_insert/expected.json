@@ -1,0 +1,16 @@
+{
+  "required_plan_field": "zone_type",
+  "forbidden_zone_types": [
+    "question_area",
+    "reference_material"
+  ],
+  "allowed_zone_type": "answer_area",
+  "must_fail_without_explicit_allow": true,
+  "explicit_allow_flag": "explicitly_allowed_question_area_image",
+  "must_show_in_confirmation_table": [
+    "区域类型",
+    "插入位置",
+    "附近文字/锚点",
+    "备注/风险"
+  ]
+}

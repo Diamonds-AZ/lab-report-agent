@@ -1,0 +1,11 @@
+﻿experiment_type: web_vscode
+platform: "VS Code + browser preview"
+must_include:
+  - "VS Code interface"
+  - "code editor"
+  - "terminal or browser preview"
+  - "realistic desktop software screenshot"
+forbidden:
+  - "unrelated IDE"
+notes:
+  - "画面可包含 VS Code 编辑器、终端、浏览器预览、控制台输出。"

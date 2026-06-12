@@ -1,0 +1,13 @@
+﻿experiment_type: java_idea
+platform: "IntelliJ IDEA"
+must_include:
+  - "IntelliJ IDEA English interface"
+  - "Project tree"
+  - "Java source code editor"
+  - "Run console"
+  - "realistic desktop software screenshot"
+forbidden:
+  - "Eclipse"
+  - "NetBeans"
+notes:
+  - "代码注释可以中文，控制台输出应与实验内容对应。"

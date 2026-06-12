@@ -1,0 +1,18 @@
+{
+  "question_reference_markers": [
+    "三、实验流程",
+    "如下图所示",
+    "观察硬件结构"
+  ],
+  "answer_area_markers": [
+    "实验报告模板",
+    "一、程序流程图：",
+    "二、实验现象：",
+    "三、实验结果展示："
+  ],
+  "expected_zone_before_answer_divider": [
+    "question_area",
+    "reference_material"
+  ],
+  "expected_zone_after_answer_divider": "answer_area"
+}

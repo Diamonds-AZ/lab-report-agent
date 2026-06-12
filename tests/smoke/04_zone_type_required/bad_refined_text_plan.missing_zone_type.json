@@ -1,0 +1,21 @@
+{
+  "plan_stage": "refined",
+  "source_stage": "gpt_semantic_planning",
+  "items": [
+    {
+      "item_id": "BAD-TEXT-MISSING-ZONE-TYPE",
+      "block_id": "p1",
+      "is_text_fill": true,
+      "fill_type": "answer_text",
+      "slot_index": 0,
+      "left_context": "实验报告模板",
+      "right_context": "二、实验现象：",
+      "answer": "This fixture intentionally omits zone_type.",
+      "replacement_strategy": "replace_blank_spaces",
+      "confidence": "high",
+      "need_user_review": false,
+      "reason": "Negative fixture for zone_type requirement."
+    }
+  ],
+  "unresolved": []
+}

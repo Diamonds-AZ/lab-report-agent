@@ -1,0 +1,19 @@
+{
+  "expected_status": "ACTION_REQUIRED_GPT_SEMANTIC_TASK_JUDGMENT",
+  "must_create": [
+    "work/semantic_task_judgment_packet.json",
+    "work/semantic_task_judgment_packet.md",
+    "work/auto_task_directives.json"
+  ],
+  "must_not_create_before_confirmation": [
+    "work/task_directives.json",
+    "output/reports/*.docx"
+  ],
+  "pending_fields": [
+    "experiment_type",
+    "document_pattern",
+    "writing_mode",
+    "coverage_mode",
+    "detail_level"
+  ]
+}

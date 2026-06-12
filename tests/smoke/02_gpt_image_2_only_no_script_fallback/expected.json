@@ -1,0 +1,17 @@
+{
+  "image_mode": "gpt_image_2_only",
+  "forbidden_sources": [
+    "dummy_for_smoke_test",
+    "script_renderer",
+    "synthetic_hcl",
+    "synthetic_datagrip",
+    "placeholder",
+    "legacy_run"
+  ],
+  "required_manifest_fields": {
+    "declared_source": "gpt_image_2",
+    "created_by": "image_2",
+    "generation_mode": "gpt_image_2_only"
+  },
+  "expected_failure_if_manifest_missing": true
+}

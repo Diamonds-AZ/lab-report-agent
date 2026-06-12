@@ -1,0 +1,21 @@
+{
+  "required_file": "work/task_understanding_confirmation.md",
+  "required_markers": [
+    "# 第一阶段确认",
+    "## 本次任务",
+    "## 1. 我要做什么",
+    "## 2. 实验属于哪一类",
+    "## 3. Word 模板长什么样",
+    "## 4. 报告应该怎么写",
+    "## 5. 覆盖详细程度",
+    "## 6. 内容详细程度",
+    "## 7. 图片来源策略",
+    "## 8. 姓名学号等个人信息",
+    "## 9. Word 格式处理",
+    "## 我准备覆盖的主要内容",
+    "## 你可以怎么回复"
+  ],
+  "must_display_inline_to_user": true,
+  "allow_natural_language_revision": true
+}
+

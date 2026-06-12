@@ -1,0 +1,56 @@
+experiment_type: network_hcl
+platform: "H3C HCL / 华三 HCL"
+
+reference_images:
+  enabled: true
+  directory: "assets/references/hcl"
+  analysis_output: "work/reference_analysis.md"
+  max_reference_count: 5
+  use_as_style_reference_only: true
+  copy_forbidden:
+    - "具体实验内容"
+    - "个人信息"
+    - "文件名"
+    - "路径"
+    - "无关设备名"
+    - "无关命令"
+
+must_include:
+  - "H3C HCL network simulator"
+  - "H3C/HCL style network topology"
+  - "router/switch/PC devices"
+  - "CLI terminal or command output"
+  - "realistic desktop software screenshot"
+  - "真实 HCL 窗口比例、左侧深色设备栏、顶部灰色工具栏、浅色网格拓扑画布"
+
+forbidden:
+  - "Huawei eNSP"
+  - "Cisco Packet Tracer"
+  - "Packet Tracer"
+  - "GNS3"
+  - "Cisco logo"
+  - "Huawei logo"
+  - "Packet Tracer bottom device category bar"
+  - "eNSP/Huawei style device icons"
+  - "GNS3 dark topology console style"
+
+reference_style_constraints:
+  window_layout:
+    - "顶部标题栏显示 HCL - <工程名>[临时工程]，窗口整体为浅灰色桌面软件风格。"
+    - "标题栏下方是横向灰色工具栏，包含新建、打开、保存、启动、停止、缩放、相机、设置、CMD 等小图标。"
+    - "左侧有深色竖向设备分类栏，顶部是 HCL 云形 logo，下方是 DIY 和多种灰色分类图标。"
+    - "主工作区是白色或浅灰色网格拓扑画布。"
+    - "右侧可有浅灰侧栏，包含抓包接口列表和拓扑汇总。"
+    - "底部状态栏包含版权信息和系统版本，例如 HCL v5.10.3。"
+  topology_style:
+    - "设备图标为深灰方形网络设备、蓝色 PC 图标，设备名称使用亮蓝色文字。"
+    - "拓扑画布中设备间距较大，背景网格很轻，连接线应简洁。"
+  cli_style:
+    - "设备控制台可作为覆盖在 HCL 主窗口上的独立黑色终端窗口。"
+    - "终端标题栏为深色，标签可显示 MSR36-20_1 等设备名。"
+    - "终端正文为黑底，白色等宽字体，提示符类似 <H3C>，光标为绿色块。"
+
+notes:
+  - "画面可包含网络拓扑、路由器、交换机、PC、命令行窗口、ping 测试、display 命令结果、NAT/ACL/VLAN/路由配置结果。"
+  - "如果 assets/references/hcl/ 下存在真实 HCL 截图，生成图片前必须先读取并分析参考图，把真实界面特征写入 work/reference_analysis.md 和 image prompt。"
+  - "参考图仅用于软件窗口比例、菜单栏、工具栏、拓扑画布、设备图标、连接线、命令行窗口、字体和颜色风格，不复制参考图中的具体实验内容或个人信息。"

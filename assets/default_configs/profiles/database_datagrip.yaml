@@ -1,0 +1,15 @@
+﻿experiment_type: database_datagrip
+platform: "JetBrains DataGrip"
+must_include:
+  - "JetBrains DataGrip English interface"
+  - "database tree"
+  - "SQL editor"
+  - "result grid"
+  - "realistic desktop software screenshot"
+forbidden:
+  - "Navicat"
+  - "DBeaver"
+  - "SQLyog"
+  - "MySQL Workbench"
+notes:
+  - "SQL 语句和运行结果应同时清晰可见，界面优先英文，SQL 注释可以中文。"
