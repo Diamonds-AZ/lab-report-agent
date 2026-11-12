@@ -95,13 +95,14 @@ def main() -> None:
             fail(f"07_fixed_image_confirmation must require marker {marker}")
 
     converter_expected = load_json(ROOT / "08_legacy_doc_converter_fallback" / "expected.json")
-    if converter_expected.get("converter_order") != ["soffice", "word_com"]:
-        fail("08_legacy_doc_converter_fallback must require soffice before Word COM")
+    if converter_expected.get("converter_order") != ["soffice", "wps_com", "word_com"]:
+        fail("08_legacy_doc_converter_fallback must require soffice, WPS COM, then Word COM")
     if converter_expected.get("implicit_template_docx_fallback_allowed") is not False:
         fail("08_legacy_doc_converter_fallback must forbid implicit template.docx fallback")
     allowed_modes = converter_expected.get("allowed_modes", [])
     for mode in (
         "legacy_doc_converted_soffice",
+        "legacy_doc_converted_wps_com",
         "legacy_doc_converted_word_com",
         "legacy_doc_unresolved",
     ):

@@ -26,6 +26,7 @@ Current boundary rule: after `.docx` is decomposed into `work/doc_structure.json
 
 Before starting a formal report task in a new conversation, read these operating documents:
 
+- `docs/first_run_setup.md` when the computer is new/unfamiliar, dependencies are missing, or a legacy `.doc` needs conversion.
 - `docs/current_operating_policy.md` for workspace cleanup, identity defaults, dynamic image-count policy, current-run image isolation, text fill rules, and audit gates.
 - `docs/smoke_test_status.md` for currently verified smoke tests and formal sample coverage.
 - `docs/final_polish_policy.md` for final manual polish and delivery checks.
@@ -34,6 +35,7 @@ Before starting a formal report task in a new conversation, read these operating
 
 Default formal-task posture:
 
+- On a new or unfamiliar computer, run `scripts/setup_environment.py --input <template> --json` before report processing. Treat it as a read-only preflight. If Python packages are missing, explain the isolated setup and ask permission before running `--install-python-deps`; use the task workspace for the virtual environment and use its interpreter for every later script. If Python itself is missing, ask before installing it. Follow `docs/first_run_setup.md` for legacy `.doc`, experiment software, and screenshot fallback decisions.
 - Treat every new conversation and existing workspace state as untrusted. For a new formal task, initialize the task explicitly with `scripts/prepare_new_task.py` (or an equivalent `prepare_task` phase) before `pre_images`.
 - Only `prepare_new_task.py` / `prepare_task` may rebuild `configs/task.yaml`. `pre_images` must not silently overwrite `configs/task.yaml`.
 - After template structure extraction, stop for first-stage task-understanding confirmation unless `work/task_directives.json` exists with `confirmed_by_user=true`.
@@ -56,11 +58,12 @@ Default formal-task posture:
 - `work/image_insertion_confirmation.md` must exist and contain the confirmation table before `confirm_image_plan.py` may mark an image plan confirmed. A confirmed image plan without this file is invalid.
 - For second-stage confirmation, Codex must paste the table into the conversation for review. The saved `work/image_insertion_confirmation.md` is only the durable record.
 - Every refined text or image plan item must include `zone_type`, one of `answer_area`, `question_area`, `reference_material`, `identity_area`, or `unknown`. Formal report edits and image insertion should target `answer_area`. `question_area` and `reference_material` are forbidden unless the user explicitly asks to edit the question/reference content.
+- Every required refined image item should have a concise user-facing `caption` that describes the actual image content. Keep generation instructions and provenance out of captions. Derive captions from covered requirements and verified image contents; do not invent ordinal step ranges. Prefer descriptive captions when grouping several experiment steps.
 - If the user is not satisfied, they may reply in natural language. Do not force them to choose only "confirm" or "cancel". Record the feedback with `scripts/handle_user_feedback.py <workspace> record --stage auto --feedback-file <utf8_text_file>`, revise the corresponding semantic plan/directives, regenerate the fixed confirmation Markdown, show it again, and only then continue.
 - Clean current task residue before starting, while preserving `assets/references/`.
 - Do not modify the original template; copy it into workspace `input/`.
 - After copying a template into `input/`, clear read-only file attributes before Word processing.
-- Formal task output names default to `output/reports/<task_name>-完成版.docx`; `configs/task.yaml` may override this with `output_report_name`.
+- Formal task output names default to the input report's original basename in `output/reports/` (a legacy `.doc` keeps its basename and is saved as `.docx`); `configs/task.yaml` may override this with `output_report_name`.
 - Do not fill class, student ID, or name unless explicitly requested.
 - Identity policy is explicit:
   - `preserve_existing_identity`: do not add identity information, but keep values already present in the source template.
@@ -73,6 +76,7 @@ Default formal-task posture:
 - Do not present a report as complete unless the post-image audit gate passes.
 - Audit reports classify unresolved text as expected blanks, intentionally unchanged text, or real unresolved text.
 - Audit reports summarize screenshot provenance through `image_source_summary`; do not describe generated or synthetic images as real screenshots unless their source is `real_screenshot`.
+- Follow the user's or confirmed plan's image source without asking again. Generated report images should look normal by default: never add visible AI/illustration labels, watermarks, figure numbers, or explanatory marks unless explicitly requested. Keep provenance in the internal manifest and audit only. Do not offer a visibly labeled generated image as a fallback for required real experimental evidence.
 - If user requires image-2, set `image_mode=gpt_image_2_only` / `image_source_policy=gpt_image_2_only`; final inserted images must be recorded in `work/generated_images_manifest.json` with `declared_source=gpt_image_2`, `created_by=image_2`, `generation_mode=gpt_image_2_only`, and a matching `sha256`.
 - In `gpt_image_2_only` mode, do not use PIL, HTML, matplotlib, dummy, placeholder, synthetic, script-rendered, legacy, or older-run images as substitutes.
 - If `ACTION_REQUIRED_GENERATE_IMAGE_2_IMAGES` is emitted, Codex must call the `image_gen` tool for every item in `work/image_generation_plan.json` before `post_images`. This state must never be satisfied by local scripts, PIL, HTML rendering, dummy images, screenshots from older runs, or manual placeholders.
@@ -90,9 +94,9 @@ Default formal-task posture:
 - All Chinese text, answers, report text, and image prompts must travel through UTF-8 files, not shell pipes or command arguments.
 - Chinese paths, Chinese body text, and complex JSON must not be embedded in PowerShell here-strings, PowerShell pipes, `python -c`, or temporary inline Python snippets. Write them to UTF-8 files and pass only paths/control arguments.
 - If output introduces new `???` or `�`, treat the report as polluted and regenerate from a clean template.
-- For legacy `.doc` inputs, resolve the template with a fixed converter order: use native `.docx` directly; for `.doc`, try LibreOffice / `soffice` first; if that fails on Windows, try Microsoft Word COM automation; if both fail, stop with `ACTION_REQUIRED` and ask for a `.docx` template or converter installation. Do not silently fall back to an unrelated existing `input/template.docx`.
+- For legacy `.doc` inputs, resolve the template with a fixed converter order: use native `.docx` directly; for `.doc`, try LibreOffice / `soffice` first, then WPS COM on Windows, then Microsoft Word COM; if all fail, stop with `ACTION_REQUIRED` and ask for a `.docx` template or a working local converter. Do not silently fall back to an unrelated existing `input/template.docx`.
 - When `fill_identity_fields=false`, do not fill name, student ID, class, or identity-derived screenshot content.
-- Optional `output_report_name` in `configs/task.yaml` overrides the default report filename.
+- Optional `output_report_name` in `configs/task.yaml` explicitly overrides the source-basename default. Do not add a completion suffix or otherwise rename the report by default.
 - Image generation plans should carry `image_source` with one of `gpt_image_2`, `synthetic_hcl`, `synthetic_datagrip`, `manual_provided`, `real_screenshot`, or `unknown`.
 
 ## Semantic Text Planning
@@ -154,6 +158,7 @@ Rules:
 - Current image insertion also supports the minimum non-table `paragraph_blank_region` layout: use `target_anchor` plus `target_block_range` to place the image into the blank paragraph region after the anchor.
 - Other non-table `layout_type` values are reserved for future support and must be recorded as unresolved instead of inserted randomly.
 - Table-cell image insertion must allow the target table row to expand before inserting screenshots. Fixed row heights must be cleared where possible so screenshots are visible instead of cropped.
+- Keep each image and its caption together across page breaks. After insertion, verify figure numbering and captions against the image content and the confirmed plan, not just the image count.
 - Image quality checks are warning-only by default. Dark command-line or console screenshots are valid; warn only for clearly broken images such as almost pure black/white, extremely low information, tiny files, or very low resolution.
 
 Image count policy defaults:
@@ -200,16 +205,22 @@ Important rules:
 ```text
 .docx input -> use directly
 .doc input -> try LibreOffice / soffice
-if soffice is unavailable or fails on Windows -> try Microsoft Word COM SaveAs2(..., 16)
-if all converters fail -> ACTION_REQUIRED; ask the user to provide .docx or install a converter
+if soffice is unavailable or fails on Windows -> try WPS COM SaveAs2(..., 16)
+if WPS is unavailable or fails -> try Microsoft Word COM SaveAs2(..., 16)
+if all converters fail -> ACTION_REQUIRED; ask the user to provide .docx or install/repair a converter
 ```
 
 Rules:
 
+- Before the first document render on a machine, and before converting a legacy `.doc`, run `scripts/convert_legacy_doc.py --check`. LibreOffice is discovered through `PATH`, the process environment variable `LAB_REPORT_SOFFICE_PATH`, or the skill's local `.env` configuration. If the first check cannot find it, ask the user once for the executable path or installation folder, or whether to use an available WPS/Word COM fallback. When the user supplies a path, save it with `scripts/convert_legacy_doc.py --configure-soffice <path>`; this validates and stores the setting for later tasks, so do not ask for it again unless the saved path stops working. Use the configured executable for both conversion and rendering; for `render_docx.py`, add the configured executable's parent directory to that process's `PATH`. Do not change the machine-wide `PATH`.
+- Windows COM fallbacks are optional and depend on an installed, registered WPS Office or Microsoft Word. Do not present a Windows-only fallback as a portable dependency.
 - Write conversion output only under the current workspace `input/`.
 - Never modify the original `.doc`.
+- Use an isolated LibreOffice profile and accept a conversion only when the output is a valid DOCX package.
+- When a `python-core-*` runtime with its standard library is bundled beside `soffice`, set `PYTHONHOME` to that runtime for the LibreOffice subprocess only. Do not change the user's or system's global Python environment.
 - Run Word with `Visible=false` and `DisplayAlerts=0`.
 - Always close the document and quit Word after COM conversion.
+- Use the same background automation and cleanup rules for WPS COM.
 - Record every converter attempt in `work/input_resolution.json`.
 - Do not use an old `input/template.docx` as an implicit fallback.
 

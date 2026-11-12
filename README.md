@@ -4,12 +4,22 @@ English | [简体中文](#lab-report-agent-中文)
 
 `lab-report-agent` is a Codex skill for completing Chinese university lab-report templates from Word documents. It preserves the original Word structure, uses semantic planning for text fills and screenshot slots, and enforces audit gates for image provenance, encoding safety, unresolved blanks, and confirmation state.
 
+## Install As A Codex Skill
+
+In PowerShell, clone this repository into the Codex skills directory:
+
+```powershell
+git clone https://github.com/Diamonds-AZ/lab-report-agent.git "$HOME\.codex\skills\lab-report-agent"
+```
+
+Alternatively, download the repository ZIP and extract it so `SKILL.md` is at `<Codex skills directory>\lab-report-agent\SKILL.md`. Then start a new Codex conversation and invoke `$lab-report-agent`.
+
 This project is designed for report-generation workflows where structure matters: identity fields, in-place blanks, screenshot tables, image-source provenance, and final audit records are treated as first-class constraints.
 
 ## Features
 
 - Copies a source Word template into an isolated workspace before editing.
-- Converts legacy `.doc` inputs to `.docx` with LibreOffice / `soffice`, then falls back to Microsoft Word COM automation on Windows when needed.
+- Converts legacy `.doc` inputs to `.docx` with LibreOffice / `soffice`, WPS COM, or Microsoft Word COM on Windows.
 - Extracts document structure from Word templates.
 - Requires semantic confirmation before filling text or inserting screenshots.
 - Builds refined text-fill and image-insertion plans.
@@ -26,6 +36,7 @@ This project is designed for report-generation workflows where structure matters
 - `assets/default_configs/` - sanitized default workspace configuration.
 - `schemas/` - JSON schemas for refined plans.
 - `tests/smoke/` - small regression fixtures and metadata checks.
+- `docs/first_run_setup.md` - first-run environment checks and consent-based setup guidance.
 
 ## What Is Not Included
 
@@ -61,8 +72,8 @@ When invoking the skill, describe the task as clearly as possible. Useful detail
 - Python 3.11 or newer.
 - `python-docx`.
 - `Pillow`.
-- LibreOffice / `soffice` for automatic legacy `.doc` to `.docx` conversion.
-- Microsoft Word on Windows is optional, but can be used as the fallback converter when `soffice` is unavailable or fails.
+- `.docx` templates do not need an office suite for conversion.
+- Legacy `.doc` conversion requires at least one converter. LibreOffice is the recommended cross-platform option; WPS Office or Microsoft Word are optional Windows COM fallbacks.
 - A Codex environment that can call the image generation tool when `gpt_image_2_only` is required.
 
 Install Python dependencies:
@@ -70,6 +81,32 @@ Install Python dependencies:
 ```powershell
 python -m pip install -r requirements.txt
 ```
+
+For a first run on an unfamiliar computer, let Codex check the environment against the actual template:
+
+```powershell
+python scripts\setup_environment.py --input "<template-path>" --json
+```
+
+If Python 3.11+ is available but dependencies are missing, an isolated environment can be prepared in the task workspace after the user approves it:
+
+```powershell
+python scripts\setup_environment.py --install-python-deps --venv "<workspace>\.venv"
+```
+
+The helper never installs software by default. It does not install Python, LibreOffice, experiment applications, or image-generation tools. See [`docs/first_run_setup.md`](docs/first_run_setup.md) for consent and recovery rules.
+
+### Legacy `.doc` Conversion Setup
+
+Install LibreOffice from the [official download page](https://www.libreoffice.org/download/download/). The converter checks `PATH`, the process environment variable `LAB_REPORT_SOFFICE_PATH`, and an optional skill-local `.env` file (ignored by Git) containing `LAB_REPORT_SOFFICE_PATH=<path to soffice.com or soffice.exe>`. If LibreOffice is not found on first use, the skill asks once for the executable path or installation folder; `scripts/convert_legacy_doc.py --configure-soffice <path>` validates and saves it for later tasks. The same configured executable is used for conversion and document rendering. On Linux or macOS, install LibreOffice using the operating system's package manager and make sure `soffice` is on `PATH`.
+
+Check what this computer can attempt before processing a legacy template:
+
+```powershell
+python scripts\convert_legacy_doc.py --check
+```
+
+The check finds LibreOffice on `PATH` or at the saved skill-local path and reports whether the Windows COM fallback ProgIDs are registered. On Windows, this registration check reads `HKEY_CLASSES_ROOT\Kwps.Application` and `HKEY_CLASSES_ROOT\Word.Application`; it does not launch the applications. Actual COM activation is verified only when a conversion runs. The converter uses isolated LibreOffice profiles, points its subprocess at an adjacent bundled Python runtime when present, and validates the resulting DOCX package. It does not change global Python settings. If LibreOffice is not found on first use, the skill asks once for a custom executable path before choosing a COM fallback and stores the validated path for later tasks. If all local converters fail, provide a `.docx` template or install a supported converter. LibreOffice's [Windows installation guide](https://www.libreoffice.org/get-help/install-howto/windows/) and [command-line documentation](https://help.libreoffice.org/latest/en-US/text/shared/guide/start_parameters.html) describe installation and command-line use.
 
 ## Quick Smoke Check
 
@@ -119,12 +156,22 @@ MIT. See `LICENSE`.
 
 `lab-report-agent` 是一个用于完成中文高校实验报告模板的 Codex skill。它面向 Word 实验报告场景，尽量保留原始模板结构，通过语义规划决定文字填充和截图插入位置，并用审计流程检查图片来源、编码安全、未填空白和确认状态。
 
+## 安装为 Codex Skill
+
+在 PowerShell 中将仓库克隆到 Codex skills 目录：
+
+```powershell
+git clone https://github.com/Diamonds-AZ/lab-report-agent.git "$HOME\.codex\skills\lab-report-agent"
+```
+
+也可以下载仓库 ZIP，并解压到 `<Codex skills directory>\lab-report-agent\`，确保 `SKILL.md` 位于该目录根部。之后新建 Codex 对话并调用 `$lab-report-agent`。
+
 这个项目适合处理结构要求比较强的实验报告：姓名学号栏、原位填空、截图表格、图片来源证明、最终审计记录，都会被当作正式约束处理。
 
 ## 功能
 
 - 在编辑前把 Word 模板复制到隔离工作区，避免修改原文件。
-- 使用 LibreOffice / `soffice` 将旧版 `.doc` 转换为 `.docx`；在 Windows 下必要时可回退到 Microsoft Word COM 自动化转换。
+- 使用 LibreOffice / `soffice` 将旧版 `.doc` 转换为 `.docx`；Windows 下也支持 WPS COM 和 Microsoft Word COM 自动化转换。
 - 从 Word 模板中抽取段落、表格、空白和截图位等结构信息。
 - 在写入正文或插入截图前，要求进行语义确认。
 - 生成精炼的文字填充计划和图片插入计划。
@@ -176,8 +223,8 @@ MIT. See `LICENSE`.
 - Python 3.11 或更高版本。
 - `python-docx`。
 - `Pillow`。
-- LibreOffice / `soffice`，用于自动把旧版 `.doc` 转换为 `.docx`。
-- Windows 上的 Microsoft Word 是可选项；当 `soffice` 不可用或转换失败时，可作为回退转换器。
+- `.docx` 模板不需要额外安装办公软件来做格式转换。
+- 转换旧版 `.doc` 至少需要一个本地转换器。推荐跨平台使用 LibreOffice；Windows 下也可选用 WPS Office 或 Microsoft Word COM 作为回退。
 - 当任务要求 `gpt_image_2_only` 时，需要能调用图片生成工具的 Codex 环境。
 
 安装 Python 依赖：
@@ -185,6 +232,32 @@ MIT. See `LICENSE`.
 ```powershell
 python -m pip install -r requirements.txt
 ```
+
+首次在陌生电脑上使用时，可让 Codex 根据实际模板先检查环境：
+
+```powershell
+python scripts\setup_environment.py --input "<模板路径>" --json
+```
+
+如果 Python 3.11+ 已安装但缺少依赖，用户批准后，可以在本次任务工作区创建隔离环境：
+
+```powershell
+python scripts\setup_environment.py --install-python-deps --venv "<工作区>\.venv"
+```
+
+该工具默认只检查，不会自行安装软件；它不会安装 Python、LibreOffice、实验软件或生图工具。安装授权与失败后的处理方式见[`docs/first_run_setup.md`](docs/first_run_setup.md)。
+
+### 旧版 `.doc` 转换环境
+
+从 [LibreOffice 官方下载页](https://www.libreoffice.org/download/download/)安装 LibreOffice。转换器会检查 `PATH`、进程环境变量 `LAB_REPORT_SOFFICE_PATH`，以及 skill 本地 `.env` 文件（该文件已被 Git 忽略），其中保存 `LAB_REPORT_SOFFICE_PATH=<soffice.com 或 soffice.exe 的路径>`。首次检查未找到 LibreOffice 时，skill 应询问一次可执行文件路径或安装目录；用户提供后通过 `scripts/convert_legacy_doc.py --configure-soffice <路径>` 验证并保存，后续任务自动复用，同一程序也用于文档渲染。Linux 或 macOS 用户可通过系统包管理器安装 LibreOffice，并确保 `soffice` 在 `PATH` 中。
+
+处理旧版模板前，可以先检查本机可尝试的转换路径：
+
+```powershell
+python scripts\convert_legacy_doc.py --check
+```
+
+该检查会从 `PATH` 或 skill 保存的路径定位 LibreOffice，并报告 Windows 回退转换器的 COM ProgID 是否已注册。Windows 下会检查注册表中的 `HKEY_CLASSES_ROOT\Kwps.Application` 和 `HKEY_CLASSES_ROOT\Word.Application`，但不会在预检时启动应用；WPS/Word 是否能真正启动，只有实际转换时才能确认。首次文档渲染前或转换 `.doc` 时若未找到 LibreOffice，skill 应询问一次用户是否提供可执行文件路径，再选择 WPS/Word 回退；用户给出后保存配置并在后续任务复用。转换器会使用隔离的 LibreOffice 配置目录；如果 `soffice` 同目录包含自带 Python 运行时，则仅为 LibreOffice 子进程设置对应的 `PYTHONHOME`，不会更改用户或系统的全局 Python 设置；生成后还会校验 DOCX 文件包。如果本机所有转换器都失败，请提供 `.docx` 模板，或安装受支持的转换器。LibreOffice 的[Windows 安装指南](https://www.libreoffice.org/get-help/install-howto/windows/)和[命令行文档](https://help.libreoffice.org/latest/en-US/text/shared/guide/start_parameters.html)提供了安装与命令行使用说明。
 
 ## 快速烟测
 

@@ -126,8 +126,8 @@ def must_show_summary(item: dict) -> str:
 
 def content_summary(item: dict) -> str:
     values = [
-        item.get("caption"),
         item.get("image_purpose"),
+        item.get("caption"),
         item.get("step_context"),
         item.get("prompt_topic"),
     ]

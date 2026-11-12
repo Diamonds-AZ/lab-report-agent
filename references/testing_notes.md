@@ -57,4 +57,14 @@ Generated:
 - `04_smoke_chinese_path_doc.doc`: Chinese workspace path, legacy `.doc` conversion, conversion stdout does not pollute parent process paths.
 - `05_smoke_blank_variants.docx`: underline placeholder, standalone-space run, sentence-middle spaces, multiple blanks in one paragraph, mixed underline and spaces.
 - `06_smoke_missing_image_hard_fail.docx`: current run expects one image, current run image is missing, legacy images exist elsewhere, `post_images` must fail without fallback.
-- `08_legacy_doc_converter_fallback`: metadata check for the fixed converter order: `.doc` uses LibreOffice / `soffice` first, Microsoft Word COM second on Windows, and no implicit fallback to stale `input/template.docx`.
+- `08_legacy_doc_converter_fallback`: metadata check for the fixed converter order: `.doc` uses LibreOffice / `soffice`, WPS COM on Windows, then Microsoft Word COM, with no implicit fallback to stale `input/template.docx`.
+
+## Portable Converter Tests
+
+Run the converter unit tests without requiring an installed office suite:
+
+```powershell
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+These tests validate converter ordering, isolated LibreOffice profile arguments, and rejection of malformed DOCX output. They do not prove that LibreOffice, WPS, or Word is installed on the current computer. For an actual legacy-document conversion, install LibreOffice or a supported Windows COM application and run a real `.doc` conversion; record the machine and converter in the test notes.

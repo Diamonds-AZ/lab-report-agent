@@ -96,7 +96,7 @@ Do not present a report as complete if hard-fail audit conditions remain.
 The batch audit should be readable without opening JSON. Confirm:
 
 - `final_status` is `PASS` unless the user is intentionally receiving an action-required draft.
-- `output_report` uses `<task_name>-完成版.docx` or the explicit `output_report_name`.
+- `output_report` preserves the source report's basename by default (legacy `.doc` becomes `.docx`) or uses an explicitly configured `output_report_name`.
 - `image_source_summary` is present and does not mislabel generated or synthetic screenshots as real screenshots.
 - `expected_blank_count`, `intentionally_unchanged_count`, and `real_unresolved_text_count` are separated.
 - Identity blanks are expected only when identity filling is disabled or the user requested blanks.

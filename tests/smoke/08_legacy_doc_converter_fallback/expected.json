@@ -1,11 +1,13 @@
 {
   "converter_order": [
     "soffice",
+    "wps_com",
     "word_com"
   ],
   "allowed_modes": [
     "native_docx",
     "legacy_doc_converted_soffice",
+    "legacy_doc_converted_wps_com",
     "legacy_doc_converted_word_com",
     "legacy_doc_unresolved",
     "input_missing"

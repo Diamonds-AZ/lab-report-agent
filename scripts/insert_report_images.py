@@ -12,7 +12,7 @@ from utils.fs_safety import configure_utf8_stdio
 
 
 EMU_PER_INCH = 914400
-DEFAULT_IMAGE_WIDTH_INCHES = 5.7
+DEFAULT_IMAGE_WIDTH_INCHES = 5.2
 
 
 def row_height_info(row):
@@ -91,6 +91,17 @@ def suspected_crop(before, after, fit):
     return False, None
 
 
+def caption_for_item(number: int, item: dict) -> str:
+    caption = str(item.get("caption") or "").strip()
+    instruction_markers = ("画面不加", "不要添加", "不添加", "AI/示意图", "水印", "图号")
+    if caption and any(marker in caption for marker in instruction_markers):
+        caption = ""
+    if not caption:
+        caption = str(item.get("image_purpose") or item.get("purpose") or item.get("step_context") or item.get("image_item_id") or "图片").strip()
+    caption = re.sub(r"^实施阶段第\s*[\d\s至到\-—]+\s*项[：:]\s*", "", caption)
+    return f"图 {number} {caption}"
+
+
 def add_image_to_cell(cell, row, image_path: Path, caption: str, item, clear=True):
     before, after = allow_table_row_expand(row)
     fit = fit_image_size(image_path)
@@ -98,12 +109,12 @@ def add_image_to_cell(cell, row, image_path: Path, caption: str, item, clear=Tru
     if not clear:
         p = cell.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.keep_together = True
     run = p.add_run()
     run.add_picture(str(image_path), width=Inches(fit["inserted_width_inches"]))
-    cap = cell.add_paragraph(caption)
-    cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    for r in cap.runs:
-        r.font.size = Pt(9)
+    p.add_run().add_break()
+    caption_run = p.add_run(caption)
+    caption_run.font.size = Pt(9)
     cropped, warning = suspected_crop(before, after, fit)
     return {
         "image_id": item.get("image_id"),
@@ -171,22 +182,14 @@ def add_image_to_paragraph_region(doc, item, image_path: Path, caption: str):
     image_paragraph = region[0]
     clear_paragraph(image_paragraph)
     image_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    image_paragraph.paragraph_format.keep_together = True
     fit = fit_image_size(image_path)
     image_paragraph.add_run().add_picture(str(image_path), width=Inches(fit["inserted_width_inches"]))
+    image_paragraph.add_run().add_break()
+    caption_run = image_paragraph.add_run(caption)
+    caption_run.font.size = Pt(9)
 
-    if len(region) > 1:
-        caption_paragraph = region[1]
-        clear_paragraph(caption_paragraph)
-        caption_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        caption_paragraph.add_run(caption)
-        for r in caption_paragraph.runs:
-            r.font.size = Pt(9)
-    else:
-        image_paragraph.add_run().add_break()
-        caption_run = image_paragraph.add_run(caption)
-        caption_run.font.size = Pt(9)
-
-    for paragraph in reversed(region[2:]):
+    for paragraph in reversed(region[1:]):
         delete_paragraph(paragraph)
 
     return {
@@ -374,7 +377,7 @@ def main():
         layout_type = item.get("layout_type")
         image = image_path_for_item(generated_dir, item)
         quality_audit.append(quality_warning_for_image(image, item))
-        caption = f"图 {n} {item.get('step_context') or item.get('purpose') or item.get('image_item_id')}"
+        caption = caption_for_item(n, item)
         if table_index is None:
             if layout_type == "paragraph_blank_region":
                 try:

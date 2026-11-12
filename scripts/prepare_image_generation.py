@@ -194,6 +194,8 @@ def main():
                 "zone_type": item.get("zone_type"),
                 "explicitly_allowed_question_area_image": item.get("explicitly_allowed_question_area_image", False),
                 "step_context": item.get("step_context"),
+                "caption": item.get("caption"),
+                "image_purpose": item.get("image_purpose"),
                 "output_filename": output_filename,
                 "prompt": prompt_info.get("prompt", item.get("prompt_topic", "")),
                 "image_source": image_source_for_item(item, workspace),

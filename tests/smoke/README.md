@@ -21,3 +21,11 @@ python tests\smoke\run_smoke_asset_checks.py
 ```
 
 The asset check verifies the smoke fixtures and expected metadata. It does not generate a formal report and does not call image-2.
+
+The legacy `.doc` converter has separate unit tests that do not require LibreOffice, WPS Office, or Microsoft Word:
+
+```powershell
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+For real `.doc` conversion, install LibreOffice (recommended) or a supported Windows COM application. Run `python scripts\convert_legacy_doc.py --check` to inspect local converter paths before testing.

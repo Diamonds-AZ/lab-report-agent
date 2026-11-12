@@ -294,14 +294,16 @@ def start_or_resume_run(workspace: Path, phase: str, task=None, resolved_input: 
     return current
 
 
-def safe_report_filename(task_name: str, max_stem_length: int = 90) -> str:
-    raw = (task_name or "").strip().strip(".")
+def safe_report_filename(source_filename: str, fallback_name: str = "实验报告", max_stem_length: int = 90) -> str:
+    source_path = Path(source_filename).name if source_filename else ""
+    raw = Path(source_path).stem if source_path else (fallback_name or "实验报告")
+    raw = raw.strip().strip(".")
     name = re.sub(r'[<>:"/\\|?*]+', "-", raw).strip().strip(".")
     if not name:
         name = "实验报告"
     if len(name) > max_stem_length:
         name = name[:max_stem_length].rstrip(" .")
-    return f"{name}-完成版.docx"
+    return f"{name}.docx"
 
 
 def report_name(task):
@@ -313,7 +315,7 @@ def report_name(task):
         return override
     if task.get("workflow_stage") == "first_run_test":
         return "流程测试_实验报告.docx"
-    return safe_report_filename(task.get("task_name", ""))
+    return safe_report_filename(task.get("input_report", ""), task.get("task_name", ""))
 
 
 def text_counts_from_docx(path: Path):

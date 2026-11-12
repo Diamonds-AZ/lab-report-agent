@@ -11,11 +11,12 @@ This document records the current stable operating policy for formal lab-report 
   - Preserve reference assets under `assets/references/`, including HCL, DataGrip, IDEA, and VS Code references.
 - Do not modify the original report template.
 - Copy the source template into the workspace `input/` directory, then operate only on that copy.
-- Resolve legacy `.doc` inputs with the fixed converter order: LibreOffice / `soffice` first, then Microsoft Word COM automation on Windows if `soffice` fails, then `ACTION_REQUIRED` if no converter succeeds.
+- Resolve legacy `.doc` inputs with the fixed converter order: LibreOffice / `soffice`, WPS COM on Windows, then Microsoft Word COM. LibreOffice is the recommended cross-platform dependency; Windows COM is an optional local fallback, not a portable prerequisite. Run `scripts/convert_legacy_doc.py --check` before the first document render on a machine and before legacy conversion. If LibreOffice is not found, ask the user once for its executable path or installation folder, or whether to use a COM fallback. Save a validated user-provided path in the skill's local `.env`; reuse it for later tasks and for document rendering without changing machine-wide `PATH`. Stop with `ACTION_REQUIRED` if no converter succeeds.
 - Do not silently reuse an unrelated existing `input/template.docx` when `.doc` conversion fails. The audit file `work/input_resolution.json` must record each converter attempt.
 - Write completed reports to `output/reports/`.
-- Formal report filenames default to `<task_name>-完成版.docx`.
+- Formal report filenames default to the source template's basename, preserving its original name; a legacy `.doc` is saved with the same basename and a `.docx` extension.
 - If `configs/task.yaml` explicitly sets `output_report_name`, use that filename instead after sanitizing unsafe Windows filename characters.
+- On first use, if a required LibreOffice converter is not found on `PATH` or in the saved skill configuration, ask the user once for its executable path or installation folder. Save a validated path in the skill's local `.env` so later tasks reuse it, and use the same executable for conversion and document rendering.
 - After extracting `work/doc_structure.json`, require first-stage task-understanding confirmation before semantic planning continues.
 - The first-stage recognition step is semantic, not script-driven. Scripts may summarize Word structure and collect evidence, but they must not finalize `experiment_type`, `document_pattern`, `writing_mode`, `coverage_mode`, or `detail_level` with keyword rules.
 - The same rule applies to report filling and image insertion. After Word decomposition, scripts may only provide document-structure facts. They must not decide final text-fill slots or image slots from keyword hints such as `下图`, `如下图`, `截图`, `结果为`, or blank paragraphs.

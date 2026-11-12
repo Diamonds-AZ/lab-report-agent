@@ -3,6 +3,7 @@
 - 保留模板原有结构、表格、页眉页脚和编号。
 - first_run_test 阶段不填写真实姓名、学号、班级，也不在截图和文件名中使用真实身份信息。
 - synthetic execution 下不启动真实桌面软件，统一生成平台风格截图。
+- 生成的截图按正常平台画面生成，默认不添加可见 AI、示意图、图号、水印或解释性标记；图片来源只记录在内部 manifest / audit 中。
 - 填空题必须优先原位回填：直接替换下划线、空白 run、括号占位或表格空白单元格，不在下一行写“填写：”“应填入：”“答案：”。
 - 只有题目明确要求说明、分析、解释原因时，才允许另起段落写说明性内容。
 - Word 填空识别必须包含语义填空步骤：先提取 `work/doc_structure.json`，再生成 `work/draft_text_fill_candidates.json`，然后由 Codex/GPT 语义审查生成 `work/refined_text_fill_plan.json`，最后脚本按 refined plan 原位回填；GPT/语义判断只负责规划，不直接修改 Word。
