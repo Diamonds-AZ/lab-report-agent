@@ -2,6 +2,12 @@
 
 This document tracks known limitations and later-stage work. These are not blockers for the current stable single-report workflow, but they should guide future improvements.
 
+## Real Experiment Software Execution (Roadmap)
+
+The default `execution_mode: synthetic` is a configuration placeholder for the current workflow. It does not launch or operate experiment software. Current runs prepare report content and use the selected image source; real application execution and capture are not implemented.
+
+We plan to continue updating the skill toward a real execution interface with software-specific adapters, controlled experiment steps, and real evidence capture. This is a future roadmap commitment without a release date. Until implemented and tested for a specific application, do not describe the skill as able to run that application or produce real captures automatically.
+
 ## Formal Experiment Type Recognition
 
 Formal experiment type recognition must not depend only on smoke-test hook phrases such as `本实验应识别为 network_hcl`.

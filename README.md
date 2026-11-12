@@ -49,6 +49,7 @@ Do not publish user-provided `.doc/.docx` templates unless you have permission t
 - This skill is currently designed and tested only for Codex. The author has not tested it with other vibe-coding tools.
 - Image generation currently assumes the Codex `image_gen` / image-2 workflow. If you use another tool, you may need to adapt the image-generation plan, generated-image manifest, or connect your own external image model.
 - This project is a test/beta skill, not a polished product. It may struggle with some lab-report types, unusual Word templates, or strict institution-specific formatting rules.
+- We plan to keep iterating toward a real experiment-software execution interface, including app-specific adapters and real evidence capture. This is a roadmap commitment, not a capability in the current release; no release date is promised.
 - Always inspect the generated report, screenshots, and audit files before submitting anything.
 
 ## What To Tell Codex When You Start
@@ -200,6 +201,7 @@ git clone https://github.com/Diamonds-AZ/lab-report-agent.git "$HOME\.codex\skil
 - 这个 skill 目前仅针对 Codex 设计和测试。作者并未使用其他 vibe-coding 工具测试过。
 - 生图流程目前默认使用 Codex 的 `image_gen` / image-2 工作流。如果你在其他工具里使用，可能需要自行调整图片生成计划、图片 manifest，或外接自己的生图模型。
 - 这个项目仍是测试版 skill，不是成熟产品。面对某些实验报告类型、特殊 Word 模板或严格的学校格式要求时，可能会力不从心。
+- 我们计划在后续版本中持续迭代，逐步接入真实实验软件的实操接口，包括按软件适配的执行方式和真实证据采集。这是后续路线图承诺，当前版本尚未实现，也不承诺具体发布日期。
 - 提交前请务必人工检查生成后的报告、截图和审计文件。
 
 ## 开始调用时建议说明什么
